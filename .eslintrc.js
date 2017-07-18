@@ -10,8 +10,8 @@ module.exports = {
   extends: 'airbnb-base',
   globals: {
     document: true,
-    require: true,
     Fuc: true,
+    process: true,
   },
   // add your custom rules here
   rules: {

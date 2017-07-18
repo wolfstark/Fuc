@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,6 +68,62 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Util = function () {
+  function Util() {
+    _classCallCheck(this, Util);
+  }
+
+  _createClass(Util, null, [{
+    key: 'isEqual',
+    value: function isEqual(a, b) {
+      return a === b || JSON.stringify(a) === JSON.stringify(b);
+    }
+  }, {
+    key: 'isObject',
+    value: function isObject(val) {
+      return val !== null && (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object';
+    }
+  }, {
+    key: 'deepCopy',
+    value: function deepCopy(from) {
+      if (Util.isObject(from)) {
+        return Object.assign({}, from);
+      }
+      return from;
+    }
+  }, {
+    key: 'computeExpression',
+    value: function computeExpression(exp, vm) {
+      try {
+        // with(context){
+        /* eslint-disable no-eval */
+        return eval(exp);
+        /* eslint-enable no-eval */
+        // }
+      } catch (e) {
+        console.error('ERROR', e);
+        return '';
+      }
+    }
+  }]);
+
+  return Util;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Util);
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // CONCATENATED MODULE: ./src/dep.js
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -104,7 +160,7 @@ var Dep = function () {
 
 /* harmony default export */ var dep_defaultExport = (Dep);
 // CONCATENATED MODULE: ./src/wathcer.js
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(0);
 var wathcer__createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function wathcer__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -163,7 +219,7 @@ var wathcer_Watcher = function () {
 
 /* harmony default export */ var wathcer_defaultExport = (wathcer_Watcher);
 // CONCATENATED MODULE: ./src/compiler.js
-/* harmony import */ var compiler___WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
+/* harmony import */ var compiler___WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(0);
 var compiler__createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -671,65 +727,13 @@ var src_Fuc = function () {
   return Fuc;
 }();
 
-Object.defineProperty(window, 'Fuc', {
-  value: src_Fuc
-});
+if (true) {
+  Object.defineProperty(window, 'Fuc', {
+    value: src_Fuc
+  });
+}
+
 /* harmony default export */ __webpack_exports__["default"] = (src_Fuc);
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Util = function () {
-  function Util() {
-    _classCallCheck(this, Util);
-  }
-
-  _createClass(Util, null, [{
-    key: 'isEqual',
-    value: function isEqual(a, b) {
-      return a === b || JSON.stringify(a) === JSON.stringify(b);
-    }
-  }, {
-    key: 'isObject',
-    value: function isObject(val) {
-      return val !== null && (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object';
-    }
-  }, {
-    key: 'deepCopy',
-    value: function deepCopy(from) {
-      if (Util.isObject(from)) {
-        return Object.assign({}, from);
-      }
-      return from;
-    }
-  }, {
-    key: 'computeExpression',
-    value: function computeExpression(exp, vm) {
-      try {
-        // with(context){
-        /* eslint-disable no-eval */
-        return eval(exp);
-        /* eslint-enable no-eval */
-        // }
-      } catch (e) {
-        console.error('ERROR', e);
-        return '';
-      }
-    }
-  }]);
-
-  return Util;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Util);
 
 /***/ })
 /******/ ])));

@@ -1,9 +1,10 @@
 // @ts-check
 const webpack = require('webpack');
 const path = require('path');
-const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
+// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 
-const configuration = { prepack: { sourceMaps: true } };
+// const configuration = { prepack: { sourceMaps: true } };
+const NODE_ENV = process.env.NODE_ENV;
 
 const config = {
   entry: './src/index.js',
@@ -23,10 +24,11 @@ const config = {
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     // new PrepackWebpackPlugin(configuration),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
+    }),
   ],
 };
-
-const NODE_ENV = process.env.NODE_ENV;
 
 if (NODE_ENV === 'development') {
   config.watch = true;

@@ -56,7 +56,10 @@ class Fuc {
     });
   }
 }
-Object.defineProperty(window, 'Fuc', {
-  value: Fuc,
-});
+if (process.env.NODE_ENV === 'development') {
+  Object.defineProperty(window, 'Fuc', {
+    value: Fuc,
+  });
+}
+
 export default Fuc;
