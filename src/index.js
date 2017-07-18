@@ -14,7 +14,6 @@ class Fuc {
       },
       options,
     );
-    this.window = window;
     /* eslint no-underscore-dangle: 0*/
     this._proxy(this.$options);
     this._proxyMethods(options.methods);

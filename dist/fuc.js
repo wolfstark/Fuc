@@ -68,7 +68,6 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // CONCATENATED MODULE: ./src/dep.js
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -325,7 +324,7 @@ var compiler_Compiler = function () {
   }, {
     key: 'textHandler',
     value: function textHandler(node, scope, exp) {
-      this.bindWatcher(node, scope, exp, 'text');
+      this.bindWatcher(node, scope, exp, 'text', undefined);
     }
   }, {
     key: 'ifHandler',
@@ -424,12 +423,9 @@ function observer__classCallCheck(instance, Constructor) { if (!(instance instan
 
 
 var observer_Observer = function () {
-  // data;
-
   function Observer(data) {
     observer__classCallCheck(this, Observer);
 
-    // this.data = data;
     // 劫持数据
     this.observe(data);
   }
@@ -500,6 +496,8 @@ var observer_Observer = function () {
   }, {
     key: 'defineReactiveArray',
     value: function defineReactiveArray(dep) {
+      var _this3 = this;
+
       var arrayPrototype = Array.prototype;
       var arrayObject = Object.create(arrayPrototype);
 
@@ -507,6 +505,7 @@ var observer_Observer = function () {
 
       methods.forEach(function (method) {
         var originalMethod = arrayPrototype[method];
+        var self = _this3;
 
         Object.defineProperty(arrayObject, method, {
           value: function value() {
@@ -528,8 +527,9 @@ var observer_Observer = function () {
               default:
             }
 
+            // 新增数据下可能还有对象数组，局部劫持
             if (inserted) {
-              this.observeArray(inserted, dep);
+              self.observeArray(inserted, dep);
             }
             dep.notify({ method: method, args: args });
 
@@ -590,7 +590,6 @@ var src_Fuc = function () {
       computed: {},
       methods: {}
     }, options);
-    this.window = window;
     /* eslint no-underscore-dangle: 0*/
     this._proxy(this.$options);
     this._proxyMethods(options.methods);
@@ -696,7 +695,7 @@ var Util = function () {
         /* eslint-enable no-eval */
         // }
       } catch (e) {
-        window.console.error('ERROR', e);
+        console.error('ERROR', e);
         return '';
       }
     }

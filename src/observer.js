@@ -2,10 +2,7 @@
 import Dep from './dep';
 
 class Observer {
-  // data;
-
   constructor(data) {
-    // this.data = data;
     // 劫持数据
     this.observe(data);
   }
@@ -71,6 +68,7 @@ class Observer {
 
     methods.forEach((method) => {
       const originalMethod = arrayPrototype[method];
+      const self = this;
 
       Object.defineProperty(arrayObject, method, {
         value(...args) {
@@ -88,8 +86,9 @@ class Observer {
             default:
           }
 
+          // 新增数据下可能还有对象数组，局部劫持
           if (inserted) {
-            this.observeArray(inserted, dep);
+            self.observeArray(inserted, dep);
           }
           dep.notify({ method, args });
 

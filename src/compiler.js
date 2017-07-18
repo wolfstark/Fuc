@@ -135,7 +135,7 @@ export default class Compiler {
   }
   // v-text
   textHandler(node, scope, exp) {
-    this.bindWatcher(node, scope, exp, 'text');
+    this.bindWatcher(node, scope, exp, 'text', undefined);
   }
 
   ifHandler(node, scope, exp) {

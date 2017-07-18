@@ -1,9 +1,7 @@
 class Dep {
   static target;
-  subs;
-  constructor() {
-    this.subs = {};
-  }
+  subs = {};
+
   addSub(target) {
     if (!this.subs[target.uid]) {
       this.subs[target.uid] = target;

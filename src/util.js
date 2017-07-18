@@ -19,7 +19,7 @@ export default class Util {
       /* eslint-enable no-eval */
       // }
     } catch (e) {
-      window.console.error('ERROR', e);
+      console.error('ERROR', e);
       return '';
     }
   }

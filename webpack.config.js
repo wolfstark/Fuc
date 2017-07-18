@@ -1,6 +1,9 @@
 // @ts-check
 const webpack = require('webpack');
 const path = require('path');
+const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
+
+const configuration = { prepack: { sourceMaps: true } };
 
 const config = {
   entry: './src/index.js',
@@ -17,7 +20,10 @@ const config = {
     ],
   },
   devtool: 'source-map',
-  plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
+  plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    // new PrepackWebpackPlugin(configuration),
+  ],
 };
 
 const NODE_ENV = process.env.NODE_ENV;
@@ -36,9 +42,6 @@ if (NODE_ENV === 'development') {
       compress: {
         // 在UglifyJs删除没有用到的代码时不输出警告
         warnings: false,
-        // 删除所有的 `console` 语句
-        // 还可以兼容ie浏览器
-        drop_console: true,
         // 内嵌定义了但是只用到一次的变量
         collapse_vars: true,
         // 提取出出现多次但是没有定义成变量去引用的静态值
