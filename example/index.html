@@ -10,7 +10,7 @@
 
 <body>
   <div id="app">姓名{{vm.username}}
-     <p f-if="vm.showSex">男</p>
+     <p v-if="vm.showSex">男</p>
     <br>
     <button @click="toggleSex">切换</button>
   </div>
