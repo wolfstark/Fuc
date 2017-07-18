@@ -5,20 +5,20 @@ let $uid = 0;
 
 class Watcher {
   exp;
-  scope;
+  vm;
   callback;
   value = null;
   uid = $uid;
   /**
    * 用于和订阅者建立联系，当数据变更时通知watcher，watcher发出命令更新Dom
    * @param {any} exp
-   * @param {any} scope
+   * @param {any} vm
    * @param {any} callback
    * @memberof Watcher
    */
-  constructor(exp, scope, callback) {
+  constructor(exp, vm, callback) {
     this.exp = exp;
-    this.scope = scope;
+    this.vm = vm;
     this.callback = callback || function foo() {};
 
     // this.value = null;
@@ -36,7 +36,7 @@ class Watcher {
   }
   get() {
     Dep.target = this;
-    const value = Util.computeExpression(this.exp, this.scope);
+    const value = Util.computeExpression(this.exp, this.vm);
     Dep.target = null;
     return value;
   }

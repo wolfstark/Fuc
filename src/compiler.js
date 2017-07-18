@@ -60,7 +60,7 @@ export default class Compiler {
       this.$el.appendChild(this.$fragment);
     }
   }
-  compile(node, scope) {
+  compile(node, vm) {
     node.$id = $$id;
     $$id += 1;
 
@@ -68,17 +68,17 @@ export default class Compiler {
       [...node.childNodes].forEach((child) => {
         switch (child.nodeType) {
           case 3:
-            this.compileTextNode(child, scope);
+            this.compileTextNode(child, vm);
             break;
           case 1:
-            this.compileElementNode(child, scope);
+            this.compileElementNode(child, vm);
             break;
           default:
         }
       });
     }
   }
-  compileElementNode(node, scope = this.vm) {
+  compileElementNode(node, vm = this.vm) {
     const attrs = [...node.attributes];
     let lazyCompileDir = '';
     let lazyCompileExp = '';
@@ -95,7 +95,7 @@ export default class Compiler {
         } else {
           const handler = this[`${dir.type}Handler`].bind(this);
           if (handler) {
-            handler(node, scope, exp, dir.prop);
+            handler(node, vm, exp, dir.prop);
           } else {
             console.error(`找不到${dir.type}指令`);
           }
@@ -105,10 +105,10 @@ export default class Compiler {
     });
     // TODO if for不能共存
     if (lazyCompileExp) {
-      this[`${lazyCompileDir}Handler`](node, scope, lazyCompileExp);
+      this[`${lazyCompileDir}Handler`](node, vm, lazyCompileExp);
     } else {
       // 向下遍历节点
-      this.compile(node, scope);
+      this.compile(node, vm);
     }
   }
   _checkDirective(attrName) {
@@ -126,41 +126,47 @@ export default class Compiler {
     }
     return dir;
   }
-  compileTextNode(node, scope) {
+  compileTextNode(node, vm) {
     const text = node.textContent.trim();
     if (text) {
       const exp = this._parseTextExp(text);
-      this.textHandler(node, scope || this.vm, exp);
+      this.textHandler(node, vm || this.vm, exp);
     }
   }
   // v-text
-  textHandler(node, scope, exp) {
-    this.bindWatcher(node, scope, exp, 'text', undefined);
+  textHandler(node, vm, exp) {
+    this.bindWatcher(node, vm, exp, 'text', undefined);
+  }
+  // v-on
+  onHandler(node, vm, exp, prop) {
+    node.addEventListener(prop, () => {
+
+    }, false);
   }
 
-  ifHandler(node, scope, exp) {
+  ifHandler(node, vm, exp) {
     // 先编译子元素，然后根据表达式决定是否插入dom中
     // PS：这里需要先插入一个占位元素来定位，不能依赖其他元素，万一其他元素没了呢？
-    this.compile(node, scope);
+    this.compile(node, vm);
     const refNode = document.createTextNode('');
     node.parentNode.insertBefore(refNode, node);
     const current = node.parentNode.removeChild(node);
-    this.bindWatcher(current, scope, exp, 'dom', refNode); // refNode是引用关系，移动到parentNode后会自动更新位置，所以可以传入
+    this.bindWatcher(current, vm, exp, 'dom', refNode); // refNode是引用关系，移动到parentNode后会自动更新位置，所以可以传入
   }
   /**
  *
  *
  * @param {any} node
- * @param {any} scope
+ * @param {any} vm
  * @param {any} exp
  * @param {any} dir 绑定类型
  * @param {any} prop
  * @memberof Compile
  */
-  bindWatcher(node, scope, exp, dir, prop) {
+  bindWatcher(node, vm, exp, dir, prop) {
     const updateFn = updater[dir];
     /* eslint-disable no-new */
-    new Watcher(exp, scope, (newVal) => {
+    new Watcher(exp, vm, (newVal) => {
       updateFn(node, newVal, prop);
     });
     /* eslint-enable no-new */

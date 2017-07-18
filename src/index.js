@@ -15,7 +15,7 @@ class Fuc {
       options,
     );
     /* eslint no-underscore-dangle: 0*/
-    this._proxy(this.$options);
+    this._proxy(options);
     this._proxyMethods(options.methods);
     /* eslint-disable  no-new*/
     new Observer(this.$data);
@@ -23,11 +23,11 @@ class Fuc {
     /* eslint-enable  no-new*/
   }
   // 代理计算属性和$data
-  _proxy(data) {
+  _proxy(options) {
     const proxy = ['data', 'computed'];
 
     proxy.forEach((item) => {
-      Object.keys(data[item]).forEach((key) => {
+      Object.keys(options[item]).forEach((key) => {
         Object.defineProperty(this, key, {
           configurable: true,
           enumerable: true,

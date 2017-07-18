@@ -118,18 +118,18 @@ var wathcer_Watcher = function () {
   /**
    * 用于和订阅者建立联系，当数据变更时通知watcher，watcher发出命令更新Dom
    * @param {any} exp
-   * @param {any} scope
+   * @param {any} vm
    * @param {any} callback
    * @memberof Watcher
    */
-  function Watcher(exp, scope, callback) {
+  function Watcher(exp, vm, callback) {
     wathcer__classCallCheck(this, Watcher);
 
     this.value = null;
     this.uid = $uid;
 
     this.exp = exp;
-    this.scope = scope;
+    this.vm = vm;
     this.callback = callback || function foo() {};
 
     // this.value = null;
@@ -152,7 +152,7 @@ var wathcer_Watcher = function () {
     key: 'get',
     value: function get() {
       dep_defaultExport.target = this;
-      var value = __WEBPACK_IMPORTED_MODULE_1__util__["a" /* default */].computeExpression(this.exp, this.scope);
+      var value = __WEBPACK_IMPORTED_MODULE_1__util__["a" /* default */].computeExpression(this.exp, this.vm);
       dep_defaultExport.target = null;
       return value;
     }
@@ -234,7 +234,7 @@ var compiler_Compiler = function () {
 
   compiler__createClass(Compiler, [{
     key: 'compile',
-    value: function compile(node, scope) {
+    value: function compile(node, vm) {
       var _this = this;
 
       node.$id = $$id;
@@ -244,10 +244,10 @@ var compiler_Compiler = function () {
         [].concat(_toConsumableArray(node.childNodes)).forEach(function (child) {
           switch (child.nodeType) {
             case 3:
-              _this.compileTextNode(child, scope);
+              _this.compileTextNode(child, vm);
               break;
             case 1:
-              _this.compileElementNode(child, scope);
+              _this.compileElementNode(child, vm);
               break;
             default:
           }
@@ -259,7 +259,7 @@ var compiler_Compiler = function () {
     value: function compileElementNode(node) {
       var _this2 = this;
 
-      var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.vm;
+      var vm = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.vm;
 
       var attrs = [].concat(_toConsumableArray(node.attributes));
       var lazyCompileDir = '';
@@ -277,7 +277,7 @@ var compiler_Compiler = function () {
           } else {
             var handler = _this2[dir.type + 'Handler'].bind(_this2);
             if (handler) {
-              handler(node, scope, exp, dir.prop);
+              handler(node, vm, exp, dir.prop);
             } else {
               console.error('\u627E\u4E0D\u5230' + dir.type + '\u6307\u4EE4');
             }
@@ -287,10 +287,10 @@ var compiler_Compiler = function () {
       });
       // TODO if for不能共存
       if (lazyCompileExp) {
-        this[lazyCompileDir + 'Handler'](node, scope, lazyCompileExp);
+        this[lazyCompileDir + 'Handler'](node, vm, lazyCompileExp);
       } else {
         // 向下遍历节点
-        this.compile(node, scope);
+        this.compile(node, vm);
       }
     }
   }, {
@@ -312,36 +312,43 @@ var compiler_Compiler = function () {
     }
   }, {
     key: 'compileTextNode',
-    value: function compileTextNode(node, scope) {
+    value: function compileTextNode(node, vm) {
       var text = node.textContent.trim();
       if (text) {
         var exp = this._parseTextExp(text);
-        this.textHandler(node, scope || this.vm, exp);
+        this.textHandler(node, vm || this.vm, exp);
       }
     }
     // v-text
 
   }, {
     key: 'textHandler',
-    value: function textHandler(node, scope, exp) {
-      this.bindWatcher(node, scope, exp, 'text', undefined);
+    value: function textHandler(node, vm, exp) {
+      this.bindWatcher(node, vm, exp, 'text', undefined);
+    }
+    // v-on
+
+  }, {
+    key: 'onHandler',
+    value: function onHandler(node, vm, exp, prop) {
+      node.addEventListener(prop, function () {}, false);
     }
   }, {
     key: 'ifHandler',
-    value: function ifHandler(node, scope, exp) {
+    value: function ifHandler(node, vm, exp) {
       // 先编译子元素，然后根据表达式决定是否插入dom中
       // PS：这里需要先插入一个占位元素来定位，不能依赖其他元素，万一其他元素没了呢？
-      this.compile(node, scope);
+      this.compile(node, vm);
       var refNode = document.createTextNode('');
       node.parentNode.insertBefore(refNode, node);
       var current = node.parentNode.removeChild(node);
-      this.bindWatcher(current, scope, exp, 'dom', refNode); // refNode是引用关系，移动到parentNode后会自动更新位置，所以可以传入
+      this.bindWatcher(current, vm, exp, 'dom', refNode); // refNode是引用关系，移动到parentNode后会自动更新位置，所以可以传入
     }
     /**
     *
     *
     * @param {any} node
-    * @param {any} scope
+    * @param {any} vm
     * @param {any} exp
     * @param {any} dir 绑定类型
     * @param {any} prop
@@ -350,10 +357,10 @@ var compiler_Compiler = function () {
 
   }, {
     key: 'bindWatcher',
-    value: function bindWatcher(node, scope, exp, dir, prop) {
+    value: function bindWatcher(node, vm, exp, dir, prop) {
       var updateFn = updater[dir];
       /* eslint-disable no-new */
-      new wathcer_defaultExport(exp, scope, function (newVal) {
+      new wathcer_defaultExport(exp, vm, function (newVal) {
         updateFn(node, newVal, prop);
       });
       /* eslint-enable no-new */
@@ -591,7 +598,7 @@ var src_Fuc = function () {
       methods: {}
     }, options);
     /* eslint no-underscore-dangle: 0*/
-    this._proxy(this.$options);
+    this._proxy(options);
     this._proxyMethods(options.methods);
     /* eslint-disable  no-new*/
     new observer_defaultExport(this.$data);
@@ -603,13 +610,13 @@ var src_Fuc = function () {
 
   src__createClass(Fuc, [{
     key: '_proxy',
-    value: function _proxy(data) {
+    value: function _proxy(options) {
       var _this = this;
 
       var proxy = ['data', 'computed'];
 
       proxy.forEach(function (item) {
-        Object.keys(data[item]).forEach(function (key) {
+        Object.keys(options[item]).forEach(function (key) {
           Object.defineProperty(_this, key, {
             configurable: true,
             enumerable: true,

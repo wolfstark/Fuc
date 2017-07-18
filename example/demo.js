@@ -2,12 +2,17 @@
 window.vm = new Fuc({
   el: '#app',
   data: {
-    name: '王翔',
+    name: '王',
     // showSex: true,
   },
   methods: {
     // popMsg(msg) {
     //   alert(msg);
     // },
+  },
+  computed: {
+    username() {
+      return `${this.name}翔`;
+    },
   },
 });
