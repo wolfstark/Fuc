@@ -64,12 +64,12 @@ new Fuc({
 
 * 由于ES6不再支持with，目前模板上的属性需要加上vm前缀才能识别，正在查找替换方案
 
-### Reference
+<!-- ### Reference
 
 *  [Vue2.0 源码阅读：模板渲染](http://zhouweicsu.github.io/blog/2017/04/21/vue-2-0-template/)
 *  [实现一个类 Vue 的 MVVM 框架](https://gmiam.com/post/evo.html)
 *  [参照Vue实现的一个JavaScript MVVM 框架](https://github.com/qieguo2016/Vueuv)
-*  [关于公司老项目的视图渲染解决方案](https://blog.shanamaid.top/2017/05/24/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%8F%B8%E8%80%81%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%A7%86%E5%9B%BE%E6%B8%B2%E6%9F%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/)
+*  [关于公司老项目的视图渲染解决方案](https://blog.shanamaid.top/2017/05/24/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%8F%B8%E8%80%81%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%A7%86%E5%9B%BE%E6%B8%B2%E6%9F%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/) -->
 
 ### License
 

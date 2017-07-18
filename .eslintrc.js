@@ -11,7 +11,6 @@ module.exports = {
   globals: {
     document: true,
     Fuc: true,
-    process: true,
   },
   // add your custom rules here
   rules: {
