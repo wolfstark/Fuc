@@ -3,12 +3,12 @@ window.vm = new Fuc({
   el: '#app',
   data: {
     name: '王',
-    // showSex: true,
+    showSex: true,
   },
   methods: {
-    // popMsg(msg) {
-    //   alert(msg);
-    // },
+    toggleSex() {
+      this.showSex = !this.showSex;
+    },
   },
   computed: {
     username() {

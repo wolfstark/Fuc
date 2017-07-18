@@ -1,5 +1,6 @@
 // @ts-check
 import Watcher from './wathcer';
+import Util from './util';
 
 let $$id = 0;
 
@@ -113,7 +114,7 @@ export default class Compiler {
   }
   _checkDirective(attrName) {
     const dir = {};
-    if (attrName.indexOf('f-') === 0) {
+    if (attrName.indexOf('v-') === 0) {
       const parse = attrName.substring(2).split(':');
       dir.type = parse[0];
       dir.prop = parse[1];
@@ -137,11 +138,23 @@ export default class Compiler {
   textHandler(node, vm, exp) {
     this.bindWatcher(node, vm, exp, 'text', undefined);
   }
-  // v-on
+  /**
+   * 可能是一个函数名称或者是一个表达式
+   * @click="fuc" | @click="fuc()"
+   *
+   * @param {any} node
+   * @param {any} vm
+   * @param {any} exp
+   * @param {any} prop
+   * @memberof Compiler
+   */
   onHandler(node, vm, exp, prop) {
-    node.addEventListener(prop, () => {
-
-    }, false);
+    const fn = vm[exp];
+    if (typeof fn === 'function') {
+      node.addEventListener(prop, fn.bind(vm), false);
+    } else {
+      node.addEventListener(prop, () => Util.computeExpression(exp, vm), false);
+    }
   }
 
   ifHandler(node, vm, exp) {

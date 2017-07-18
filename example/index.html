@@ -10,7 +10,9 @@
 
 <body>
   <div id="app">姓名{{vm.username}}
-    <!-- <p f-if="vm.showSex">男</p> -->
+     <p f-if="vm.showSex">男</p>
+    <br>
+    <button @click="toggleSex">切换</button>
   </div>
   <script src="../dist/fuc.js"></script>
   <script src="./demo.js"></script>

@@ -163,6 +163,7 @@ var wathcer_Watcher = function () {
 
 /* harmony default export */ var wathcer_defaultExport = (wathcer_Watcher);
 // CONCATENATED MODULE: ./src/compiler.js
+/* harmony import */ var compiler___WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
 var compiler__createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -170,6 +171,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 function compiler__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // @ts-check
+
 
 
 var $$id = 0;
@@ -297,7 +299,7 @@ var compiler_Compiler = function () {
     key: '_checkDirective',
     value: function _checkDirective(attrName) {
       var dir = {};
-      if (attrName.indexOf('f-') === 0) {
+      if (attrName.indexOf('v-') === 0) {
         var parse = attrName.substring(2).split(':');
         dir.type = parse[0];
         dir.prop = parse[1];
@@ -326,12 +328,28 @@ var compiler_Compiler = function () {
     value: function textHandler(node, vm, exp) {
       this.bindWatcher(node, vm, exp, 'text', undefined);
     }
-    // v-on
+    /**
+     * 可能是一个函数名称或者是一个表达式
+     * @click="fuc" | @click="fuc()"
+     *
+     * @param {any} node
+     * @param {any} vm
+     * @param {any} exp
+     * @param {any} prop
+     * @memberof Compiler
+     */
 
   }, {
     key: 'onHandler',
     value: function onHandler(node, vm, exp, prop) {
-      node.addEventListener(prop, function () {}, false);
+      var fn = vm[exp];
+      if (typeof fn === 'function') {
+        node.addEventListener(prop, fn.bind(vm), false);
+      } else {
+        node.addEventListener(prop, function () {
+          return compiler___WEBPACK_IMPORTED_MODULE_1__util__["a" /* default */].computeExpression(exp, vm);
+        }, false);
+      }
     }
   }, {
     key: 'ifHandler',
