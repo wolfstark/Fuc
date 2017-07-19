@@ -1,5 +1,5 @@
 <h1 align="center">Fuc.js</h1>
-<h3 align="center">MVVM响应式框架,用于学习vue原理</h3>
+<h3 align="center">MVVM响应式框架，用于学习Vue原理，es6模块化开发适于阅读</h3>
 
 ### Installing
 ```

@@ -4,6 +4,7 @@ window.vm = new Fuc({
   data: {
     name: '王',
     showSex: true,
+    array: ['张三', '李四'],
   },
   methods: {
     toggleSex() {

@@ -11,6 +11,7 @@ module.exports = {
   globals: {
     document: true,
     Fuc: true,
+    Vue: true,
   },
   // add your custom rules here
   rules: {
