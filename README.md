@@ -75,4 +75,4 @@ new Fuc({
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2013-present, wolfstark
+Copyright (c) 2017 wang xiang

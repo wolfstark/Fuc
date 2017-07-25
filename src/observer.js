@@ -48,6 +48,7 @@ class Observer {
   }
 
   observeArray(arr, dep) {
+    // 分发dep供变异函数更新数据0
     Object.setPrototypeOf(arr, this.defineReactiveArray(dep));
     arr.forEach((item) => {
       this.observe(item);

@@ -38,6 +38,13 @@ const updater = {
     }
     node.style[attrName] = newVal;
   },
+  /**
+   *
+   *
+   * @param {any} node
+   * @param {Boolean} newVal
+   * @param {any} nextNode 占位节点
+   */
   dom(node, newVal, nextNode) {
     if (newVal) {
       nextNode.parentNode.insertBefore(node, nextNode);
