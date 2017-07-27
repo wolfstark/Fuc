@@ -20,6 +20,27 @@ class Patch {
       this.applyPatches(node, currentPatches);
     }
   }
-  applyPatches(node, currentPatches) {}
+  applyPatches(node, currentPatches) {
+    currentPatches.forEach((currentPatch) => {
+      let newNode = null;
+
+      switch (currentPatch.type) {
+        case this.REPLACE:
+          newNode =
+            typeof currentPatch.node === 'string'
+              ? document.createTextNode(currentPatch.node)
+              : currentPatch.node.render();
+          node.parentNode.replaceChild(newNode, node);
+          break;
+        case this.REORDER:
+          this.reorderChildren(node, currentPatch.moves);
+          break;
+        case this.PROPS:
+        case this.TEXT:
+        default:
+      }
+    });
+  }
+  reorderChildren(node, moves) {}
 }
 export default Patch;
