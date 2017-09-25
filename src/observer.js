@@ -21,9 +21,9 @@ class Observer {
       enumerable: true,
       configurable: true,
       get() {
-        /* eslint-disable no-unused-expressions*/
+        /* eslint-disable no-unused-expressions */
         Dep.target && dep.addSub(Dep.target);
-        /* eslint-enable no-unused-expressions*/
+        /* eslint-enable no-unused-expressions */
         return val;
       },
       set(newVal) {

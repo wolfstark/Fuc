@@ -41,6 +41,40 @@ class Patch {
       }
     });
   }
-  reorderChildren(node, moves) {}
+  reorderChildren(node, moves) {
+    const staticNodeList = [...node.childNodes];
+    const maps = {};
+
+    staticNodeList.forEach((childNode) => {
+      if (childNode.nodeType === 1) {
+        // 元素节点
+        const key = childNode.getAttribute('key');
+        if (key) {
+          maps[key] = node;
+        }
+      }
+    });
+
+    moves.forEach((move) => {
+      const index = move.index;
+
+      if (move.type === 0) {
+        // 删除
+        if (staticNodeList[index] === node.childNodes[index]) {
+          // 可能已经被删了
+          node.removeChild(node.childNodes[index]);
+        }
+        staticNodeList.splice(index, 1);
+      } else if (move.type === 1) {
+        // 插入
+        const insertNode = maps[move.item.index]
+          ? maps[move.item.index]
+          : typeof move.item === 'object' ? move.item.render() : document.createTextNode(move.item);
+
+        staticNodeList.splice(index, 0, insertNode);
+        node.inserBefore(insertNode, node.childNodes[index] || null);
+      }
+    });
+  }
 }
 export default Patch;

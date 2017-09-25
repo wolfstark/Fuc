@@ -14,13 +14,13 @@ class Fuc {
       },
       options,
     );
-    /* eslint no-underscore-dangle: 0*/
+    /* eslint no-underscore-dangle: 0 */
     this._proxy(options);
     this._proxyMethods(options.methods);
-    /* eslint-disable  no-new*/
+    /* eslint-disable  no-new */
     new Observer(this.$data);
     new Compiler({ el: this.$el, vm: this });
-    /* eslint-enable  no-new*/
+    /* eslint-enable  no-new */
   }
   // 代理计算属性和$data
   _proxy(options) {

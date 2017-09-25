@@ -13,7 +13,7 @@ class Watcher {
    * 用于和订阅者建立联系，当数据变更时通知watcher，watcher发出命令更新Dom
    * @param {any} exp
    * @param {any} vm
-   * @param {any} callback
+   * @param {Function} callback
    * @memberof Watcher
    */
   constructor(exp, vm, callback) {
